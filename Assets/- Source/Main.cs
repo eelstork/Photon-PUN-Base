@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
 /*
 Connect to the game and join/create a room.
@@ -7,14 +9,17 @@ PUN overview
 https://doc.photonengine.com/en-us/pun/current/getting-started/pun-intro
 Tutorial
 https://doc.photonengine.com/en-us/pun/current/demos-and-tutorials/pun-basics-tutorial/intro
-API:
+API V1
 http://doc-api.photonengine.com/en/PUN/current/annotated.html
+API V2
+https://doc-api.photonengine.com/en/pun/v2/class_photon_1_1_pun_1_1_utility_scripts_1_1_connect_and_join_random.html
+API V2 migration
+https://doc.photonengine.com/en-us/pun/v2/getting-started/migration-notes
 */
-public class Main : MonoBehaviour {
+public class Main : MonoBehaviourPunCallbacks {
 
 	public enum Status {Offline, Connecting, Joining, Creating, Rooming};
 
-	public string photonVersion = "v1";
 	public string room          = "The Room";
 	public bool   verbose       = true;
 
@@ -25,28 +30,31 @@ public class Main : MonoBehaviour {
 
 	void Start () {
 		status = Status.Connecting;
-		PhotonNetwork.ConnectUsingSettings(photonVersion);
+		PhotonNetwork.ConnectUsingSettings();
 	}
 
-	void OnConnectedToMaster(){
+	public override void OnConnectedToMaster(){
 		status = Status.Joining;
 		PhotonNetwork.JoinRandomRoom();
 	}
 
-	void OnPhotonRandomJoinFailed(){
+	public override void OnJoinRandomFailed(short returnCode, string message){
 		status = Status.Creating;
 		PhotonNetwork.CreateRoom(room);
 	}
 
-  void OnCreatedRoom(){ /* Don't care*/ }
+	public override void OnCreatedRoom(){
+		// Don't care because we still receive OnJoinedRoom
+	}
 
-	void OnJoinedRoom(){
+	public override void OnJoinedRoom(){
 		status = Status.Rooming; Log("Joined room");
 		FindObjectOfType<Player>().enabled = true;
 	}
 
-	void OnFailedToConnectToPhoton(DisconnectCause cause){
-		Debug.Log ("Photon error: " + cause);
+	public override void OnDisconnected(DisconnectCause cause){
+		if(cause!=DisconnectCause.DisconnectByClientLogic)
+			Err("Photon error: " + cause);
 	}
 
 	void Log(string x){ if(verbose) Debug.Log(x); }
