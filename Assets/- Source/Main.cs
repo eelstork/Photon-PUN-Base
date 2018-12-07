@@ -6,12 +6,10 @@ using Photon.Pun;
 Connect to the game and join/create a room.
 Referring:
 PUN overview
-https://doc.photonengine.com/en-us/pun/current/getting-started/pun-intro
+https://doc.photonengine.com/en-us/pun/v2/getting-started/pun-intro
 Tutorial
-https://doc.photonengine.com/en-us/pun/current/demos-and-tutorials/pun-basics-tutorial/intro
-API V1
-http://doc-api.photonengine.com/en/PUN/current/annotated.html
-API V2
+https://doc.photonengine.com/en-us/pun/v2/demos-and-tutorials/pun-basics-tutorial/intro
+API
 https://doc-api.photonengine.com/en/pun/v2/class_photon_1_1_pun_1_1_utility_scripts_1_1_connect_and_join_random.html
 API V2 migration
 https://doc.photonengine.com/en-us/pun/v2/getting-started/migration-notes
@@ -20,8 +18,9 @@ public class Main : MonoBehaviourPunCallbacks {
 
 	public enum Status {Offline, Connecting, Joining, Creating, Rooming};
 
-	public string room          = "The Room";
-	public bool   verbose       = true;
+	public string room    = "The Room";
+	public string avatar  = "Avatar";
+	public bool   verbose = true;
 
 	[Header("Informative")]
 	public Status status = Status.Offline;
@@ -49,7 +48,9 @@ public class Main : MonoBehaviourPunCallbacks {
 
 	public override void OnJoinedRoom(){
 		status = Status.Rooming; Log("Joined room");
-		FindObjectOfType<Player>().enabled = true;
+		if(avatar.Length>0){
+			PhotonNetwork.Instantiate(avatar, Vector3.zero, Quaternion.identity, 0);
+		}
 	}
 
 	public override void OnDisconnected(DisconnectCause cause){
