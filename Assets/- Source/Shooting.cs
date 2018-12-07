@@ -16,7 +16,8 @@ public class Shooting : MonoBehaviour {
 		beam.SetActive(true);
 		RaycastHit hit;
 		bool didHit = Physics.Raycast(
-			transform.position + transform.forward + Vector3.up*0.5f, transform.forward, out hit, 10f);
+			transform.position + transform.forward + Vector3.up*0.5f,
+			transform.forward, out hit, 10f);
 		if(didHit){
 			var that = hit.collider.GetComponent<PhotonView>();
 			if(that) view.RPC("DidShoot", PhotonTargets.All, that.ownerId);
