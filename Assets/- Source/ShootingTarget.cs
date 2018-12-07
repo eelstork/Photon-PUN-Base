@@ -3,12 +3,12 @@ using UnityEngine;
 public class ShootingTarget : MonoBehaviour {
 
   [PunRPC]
-  public void DidShoot(int id){
-    print(string.Format("RPC: Parameter: {0} ", id));
-    var I = FindObjectOfType<Player>();
-    I.GotHit(id);
+  public void Hit(int id){
+    if(!view.isMine)return;
+    print("Destroy our avatar");
+    PhotonNetwork.Destroy(gameObject);
   }
 
-  PhotonView view{ get{ return GetComponent<PhotonView>(); }}
+  public PhotonView view{ get{ return GetComponent<PhotonView>(); }}
 
 }

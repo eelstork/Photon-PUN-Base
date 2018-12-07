@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shooting : MonoBehaviour {
+public class Shooter : MonoBehaviour {
 
 	public KeyCode key = KeyCode.Space;
 	public GameObject beam;
@@ -15,13 +15,14 @@ public class Shooting : MonoBehaviour {
 	void Shoot(){
 		beam.SetActive(true);
 		RaycastHit hit;
-		bool didHit = Physics.Raycast(
-			transform.position + transform.forward + Vector3.up*0.5f,
-			transform.forward, out hit, 10f);
+		bool didHit = Physics.Raycast(transform.position + Vector3.up*0.5f,
+																  transform.forward, out hit, 10f);
 		if(didHit){
-			var that = hit.collider.GetComponent<PhotonView>();
-			if(that) view.RPC("DidShoot", PhotonTargets.All, that.ownerId);
-			else print("Probably shot a wall or something");
+			var that = hit.collider.GetComponent<ShootingTarget>();
+			if(that)
+				that.view.RPC("Hit", PhotonTargets.All, that.view.ownerId);
+			else
+				print("Shot a wall or something");
 		}
 	}
 
