@@ -7,8 +7,8 @@ This is a crash course/refresher, not a tutorial.
 
 - You already know how to program games using Unity 3D;
 - You need a quick walkthrough to understand Photon networking.
-- You'd like to migrate from PUN1 to PUN2 (checked the
-[migration notes][v2-migration]?)
+- You'd like to migrate from PUN1 to PUN2 (check the
+[migration notes][v2-migration] and [this diff][v1-to-v2]?)
 
 # PUN in a nutshell
 
@@ -143,4 +143,5 @@ Finally, official P.U.N resources:
 [photon-home]: https://www.photonengine.com
 [pun1]: https://assetstore.unity.com/packages/tools/network/photon-unity-networking-classic-free-1786
 [pun2]: https://assetstore.unity.com/packages/tools/network/pun-2-free-119922
+[v1-to-v2]: https://github.com/eelstork/Photon-PUN-Base/commit/c7fe79cf3259d26e9dc7da2f1ab6f052e9a610b5
 [v2-migration]: https://doc.photonengine.com/en-us/pun/v2/getting-started/migration-notes
