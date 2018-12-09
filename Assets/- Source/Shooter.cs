@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
 public class Shooter : MonoBehaviour {
 
@@ -20,7 +22,7 @@ public class Shooter : MonoBehaviour {
 		if(didHit){
 			var that = hit.collider.GetComponent<ShootingTarget>();
 			if(that)
-				that.view.RPC("Hit", PhotonTargets.All, that.view.ownerId);
+				that.view.RPC("Hit", RpcTarget.All, that.view.Owner.ActorNumber);
 			else
 				print("Shot a wall or something");
 		}
